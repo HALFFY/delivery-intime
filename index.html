@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery In-time — Operations Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="logo">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+    <div>Delivery<span> In-time</span></div>
+  </div>
+
+  <nav>
+    <div class="nav-label">Overview</div>
+    <div class="nav-item active" data-page="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" data-page="orders">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Orders / Loads
+      <span class="badge">8</span>
+    </div>
+    <div class="nav-item" data-page="dispatch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Dispatch Board
+    </div>
+
+    <div class="nav-label">Operations</div>
+    <div class="nav-item" data-page="fleet">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Fleet
+    </div>
+    <div class="nav-item" data-page="drivers">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Drivers
+    </div>
+    <div class="nav-item" data-page="routes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Routes & Tracking
+    </div>
+    <div class="nav-item" data-page="warehouses">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Warehouses / Hubs
+    </div>
+    <div class="nav-item" data-page="pod">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Proof of Delivery
+    </div>
+
+    <div class="nav-label">Finance</div>
+    <div class="nav-item" data-page="billing">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Billing & Invoices
+    </div>
+    <div class="nav-item" data-page="reports">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Reports
+    </div>
+
+    <div class="nav-label">Tools</div>
+    <div class="nav-item" data-page="ai">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      AI Ops Assistant
+    </div>
+    <div class="nav-item" data-page="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      Settings
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="avatar-sm">GG</div>
+    <div class="sidebar-footer-info">
+      <div class="sidebar-footer-name">GGPRanga</div>
+      <div class="sidebar-footer-role">Operations Manager</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="globalSearch" placeholder="Search loads, trucks, drivers…">
+    </div>
+    <div class="filter-select">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Last 7 days
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="filter-select">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+      All Locations
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="topbar-right">
+      <div class="ai-chip" id="aiChipBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        AI Assistant
+      </div>
+      <div class="notif-btn" id="notifBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <div class="notif-dot" id="notifDot"></div>
+      </div>
+      <div class="user-chip">
+        <div class="ava">GG</div>
+        <div>
+          <div class="user-name">GGPRanga</div>
+          <div class="user-role">Operations Manager</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT AREA -->
+  <div class="content" id="contentArea">
+
+    <!-- ════════════ DASHBOARD ════════════ -->
+    <div class="page-view active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Operations Dashboard</div>
+          <div class="page-sub" id="dashboardDate">Real-time delivery intelligence</div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-secondary" onclick="openModal('exportModal')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+          <button class="btn btn-primary" onclick="openModal('newLoadModal')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Load
+          </button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-color:#3b82f6;--kpi-icon-bg:rgba(59,130,246,0.1)" onclick="navigateTo('orders')">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+          <div class="kpi-label">Active Loads</div>
+          <div class="kpi-value" id="kpi-loads">247</div>
+          <div class="kpi-delta up">↑ 12% from yesterday</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#10b981;--kpi-icon-bg:rgba(16,185,129,0.1)">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="kpi-label">On-Time %</div>
+          <div class="kpi-value">94.2%</div>
+          <div class="kpi-delta up">↑ 2.1% this week</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#8b5cf6;--kpi-icon-bg:rgba(139,92,246,0.1)" onclick="navigateTo('fleet')">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+          <div class="kpi-label">Trucks Available</div>
+          <div class="kpi-value">89</div>
+          <div class="kpi-delta neutral">of 156 total</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#ef4444;--kpi-icon-bg:rgba(239,68,68,0.1)" onclick="openNotifPanel()">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="kpi-label">Exceptions</div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-delta down">3 critical alerts</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#f59e0b;--kpi-icon-bg:rgba(245,158,11,0.1)">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg></div>
+          <div class="kpi-label">Fuel Cost (MTD)</div>
+          <div class="kpi-value">$89.2K</div>
+          <div class="kpi-delta down">↓ 8% vs target</div>
+        </div>
+        <div class="kpi-card" style="--kpi-color:#00d4aa;--kpi-icon-bg:rgba(0,212,170,0.1)" onclick="navigateTo('billing')">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <div class="kpi-label">Revenue (MTD)</div>
+          <div class="kpi-value">$1.2M</div>
+          <div class="kpi-delta up">↑ 1.15% vs last month</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="min-height:220px;">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Delivery Performance (7 days)</div><div style="font-size:12px;color:var(--text3)">On-Time vs Delayed</div></div>
+          <div class="chart-wrap"><canvas id="perfChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Revenue Trend (30 days)</div><div style="font-size:12px;color:var(--text3)">MTD</div></div>
+          <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="bottom-grid" style="flex:1;min-height:340px;">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Live Operations</div><div class="card-badge live">Live</div></div>
+          <div class="map-area" id="mapArea">
+            <svg class="map-svg" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+              <rect width="700" height="400" fill="#0e1420"/>
+              <g stroke="#141c2c" stroke-width="0.5" opacity="0.6">
+                <line x1="0" y1="80" x2="700" y2="80"/><line x1="0" y1="160" x2="700" y2="160"/>
+                <line x1="0" y1="240" x2="700" y2="240"/><line x1="0" y1="320" x2="700" y2="320"/>
+                <line x1="140" y1="0" x2="140" y2="400"/><line x1="280" y1="0" x2="280" y2="400"/>
+                <line x1="420" y1="0" x2="420" y2="400"/><line x1="560" y1="0" x2="560" y2="400"/>
+              </g>
+              <g stroke="#1e3a5f" stroke-width="3" fill="none" opacity="0.8">
+                <path d="M0 180 Q175 165 350 172 Q525 178 700 170"/>
+                <path d="M380 0 Q370 100 360 180 Q350 260 340 400"/>
+                <path d="M200 0 Q240 120 260 200 Q280 300 300 400"/>
+                <path d="M0 280 Q175 270 350 275 Q525 280 700 272"/>
+              </g>
+              <g fill="#2d5a8e" font-size="9" font-family="monospace" font-weight="bold">
+                <text x="60" y="175">I-80</text><text x="60" y="275">I-70</text>
+                <text x="355" y="50">I-35</text><text x="250" y="50">I-55</text>
+              </g>
+              <g fill="#1e3250">
+                <circle cx="150" cy="90" r="18" opacity="0.6"/>
+                <circle cx="360" cy="175" r="22" opacity="0.6"/>
+                <circle cx="580" cy="120" r="15" opacity="0.6"/>
+                <circle cx="500" cy="290" r="12" opacity="0.5"/>
+              </g>
+              <g fill="#3a5a8a" font-size="11" font-family="'DM Sans',sans-serif" font-weight="500">
+                <text x="120" y="87">Chicago</text>
+                <text x="328" y="163">Kansas City</text>
+                <text x="554" y="117">Cleveland</text>
+                <text x="472" y="287">Louisville</text>
+              </g>
+              <g class="truck-marker" transform="translate(220,230)" data-id="FL-4892" data-status="on-time" data-route="Chicago → Atlanta" data-driver="Mike Rodriguez" data-color="#3b82f6">
+                <circle cx="0" cy="0" r="18" fill="rgba(59,130,246,0.15)"><animate attributeName="r" values="14;20;14" dur="2.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+                <circle cx="0" cy="0" r="14" fill="#1d3a6a" stroke="#3b82f6" stroke-width="2"/>
+                <text x="0" y="4" text-anchor="middle" fill="#60a5fa" font-size="9" font-weight="bold">FL-4892</text>
+              </g>
+              <g class="truck-marker" transform="translate(430,155)" data-id="TX-7841" data-status="on-time" data-route="Dallas → Phoenix" data-driver="Jennifer Chen" data-color="#10b981">
+                <circle cx="0" cy="0" r="18" fill="rgba(16,185,129,0.15)"><animate attributeName="r" values="14;20;14" dur="3s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="3s" begin="0.5s" repeatCount="indefinite"/></circle>
+                <circle cx="0" cy="0" r="14" fill="#0e3028" stroke="#10b981" stroke-width="2"/>
+                <text x="0" y="4" text-anchor="middle" fill="#34d399" font-size="9" font-weight="bold">TX-7841</text>
+              </g>
+              <g class="truck-marker" transform="translate(530,270)" data-id="NY-1847" data-status="delayed" data-route="Denver → Kansas City" data-driver="Lisa Park" data-color="#f59e0b">
+                <circle cx="0" cy="0" r="18" fill="rgba(245,158,11,0.15)"><animate attributeName="r" values="14;20;14" dur="2s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
+                <circle cx="0" cy="0" r="14" fill="#3a2a0a" stroke="#f59e0b" stroke-width="2"/>
+                <text x="0" y="4" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="bold">NY-1847</text>
+              </g>
+              <g class="truck-marker" transform="translate(170,330)" data-id="IL-5629" data-status="critical" data-route="Houston → New Orleans" data-driver="Robert Wilson" data-color="#ef4444">
+                <circle cx="0" cy="0" r="18" fill="rgba(239,68,68,0.2)"><animate attributeName="r" values="14;22;14" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.05;0.4" dur="1.5s" repeatCount="indefinite"/></circle>
+                <circle cx="0" cy="0" r="14" fill="#3a0e0e" stroke="#ef4444" stroke-width="2"/>
+                <text x="0" y="4" text-anchor="middle" fill="#f87171" font-size="9" font-weight="bold">IL-5629</text>
+              </g>
+              <g class="truck-marker" transform="translate(310,330)" data-id="CA-3952" data-status="on-time" data-route="Los Angeles → Seattle" data-driver="David Thompson" data-color="#00d4aa">
+                <circle cx="0" cy="0" r="18" fill="rgba(0,212,170,0.12)"><animate attributeName="r" values="14;20;14" dur="2.8s" begin="0.3s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.05;0.3" dur="2.8s" begin="0.3s" repeatCount="indefinite"/></circle>
+                <circle cx="0" cy="0" r="14" fill="#0a2a22" stroke="#00d4aa" stroke-width="2"/>
+                <text x="0" y="4" text-anchor="middle" fill="#00d4aa" font-size="9" font-weight="bold">CA-3952</text>
+              </g>
+            </svg>
+            <div class="map-legend">
+              <div class="legend-title">Vehicle Status</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> On Time</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Delayed</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> Critical</div>
+            </div>
+            <div class="map-tooltip" id="mapTooltip"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Today's Dispatch</div><div style="font-size:12px;color:var(--text3)">14 loads</div></div>
+          <div class="dispatch-list" id="dashDispatchList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ ORDERS ════════════ -->
+    <div class="page-view" id="page-orders">
+      <div class="page-header">
+        <div><div class="page-title">Orders / Loads</div><div class="page-sub">Manage all active and completed shipments</div></div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">Filter</button>
+          <button class="btn btn-primary" onclick="openModal('newLoadModal')">+ New Load</button>
+        </div>
+      </div>
+      <div class="full-card">
+        <div class="card-header" style="flex-wrap:wrap;gap:10px;">
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" style="font-size:12px;padding:5px 12px;" onclick="filterTable('all')">All (14)</button>
+            <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px;" onclick="filterTable('in-transit')">In Transit (5)</button>
+            <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px;" onclick="filterTable('assigned')">Assigned (3)</button>
+            <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px;" onclick="filterTable('delivered')">Delivered (4)</button>
+            <button class="btn btn-secondary" style="font-size:12px;padding:5px 12px;" onclick="filterTable('unassigned')">Unassigned (2)</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Load ID</th><th>Origin → Destination</th><th>Driver</th><th>Vehicle</th><th>Status</th><th>ETA</th><th>Value</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ DISPATCH BOARD ════════════ -->
+    <div class="page-view" id="page-dispatch">
+      <div class="page-header">
+        <div><div class="page-title">Dispatch Board</div><div class="page-sub">Assign and manage dispatch assignments in real-time</div></div>
+        <div class="page-actions"><button class="btn btn-primary" onclick="openModal('newLoadModal')">+ New Dispatch</button></div>
+      </div>
+      <div class="grid-2" style="flex:1;min-height:0;align-items:start;">
+        <div class="full-card">
+          <div class="card-header"><div class="card-title">Unassigned Loads</div><span class="status-pill unassigned">2 pending</span></div>
+          <div class="dispatch-list">
+            <div class="dispatch-item" onclick="openModal('loadDetailModal')">
+              <div class="dispatch-info">
+                <div class="dispatch-id">LD-2024-001851</div>
+                <div class="dispatch-route">Houston → New Orleans · 349 mi</div>
+                <div class="dispatch-driver">No driver assigned · Pickup: 14:00</div>
+              </div>
+              <button class="btn btn-primary" style="font-size:11px;padding:4px 10px;">Assign</button>
+            </div>
+            <div class="dispatch-item" onclick="openModal('loadDetailModal')">
+              <div class="dispatch-info">
+                <div class="dispatch-id">LD-2024-001858</div>
+                <div class="dispatch-route">Cleveland → Pittsburgh · 127 mi</div>
+                <div class="dispatch-driver">No driver assigned · Pickup: 16:30</div>
+              </div>
+              <button class="btn btn-primary" style="font-size:11px;padding:4px 10px;">Assign</button>
+            </div>
+          </div>
+        </div>
+        <div class="full-card">
+          <div class="card-header"><div class="card-title">Active Dispatches</div><span class="status-pill in-transit">7 moving</span></div>
+          <div class="dispatch-list" id="activeDispatchList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ FLEET ════════════ -->
+    <div class="page-view" id="page-fleet">
+      <div class="page-header">
+        <div><div class="page-title">Fleet Management</div><div class="page-sub">Monitor all 156 vehicles in real-time</div></div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">Schedule Maintenance</button>
+          <button class="btn btn-primary">+ Add Vehicle</button>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-box-label">Total Fleet</div><div class="stat-box-val">156</div><div class="stat-box-sub">All registered vehicles</div></div>
+        <div class="stat-box"><div class="stat-box-label">Active</div><div class="stat-box-val" style="color:var(--success)">67</div><div class="stat-box-sub">Currently on route</div></div>
+        <div class="stat-box"><div class="stat-box-label">Available</div><div class="stat-box-val" style="color:var(--accent)">89</div><div class="stat-box-sub">Ready for dispatch</div></div>
+        <div class="stat-box"><div class="stat-box-label">Maintenance</div><div class="stat-box-val" style="color:var(--warning)">14</div><div class="stat-box-sub">Under service</div></div>
+      </div>
+      <div class="full-card">
+        <div class="card-header"><div class="card-title">Vehicle Registry</div><div style="font-size:12px;color:var(--text3)">156 vehicles</div></div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Vehicle ID</th><th>Type</th><th>Driver</th><th>Status</th><th>Location</th><th>Mileage</th><th>Last Service</th><th>Fuel %</th></tr></thead>
+            <tbody id="fleetBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ DRIVERS ════════════ -->
+    <div class="page-view" id="page-drivers">
+      <div class="page-header">
+        <div><div class="page-title">Driver Management</div><div class="page-sub">48 registered drivers · 32 currently on duty</div></div>
+        <div class="page-actions"><button class="btn btn-primary" onclick="openModal('addDriverModal')">+ Add Driver</button></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-box-label">Total Drivers</div><div class="stat-box-val">48</div><div class="stat-box-sub">Active roster</div></div>
+        <div class="stat-box"><div class="stat-box-label">On Duty</div><div class="stat-box-val" style="color:var(--success)">32</div><div class="stat-box-sub">Currently active</div></div>
+        <div class="stat-box"><div class="stat-box-label">Avg Rating</div><div class="stat-box-val" style="color:var(--accent)">4.7★</div><div class="stat-box-sub">Performance score</div></div>
+        <div class="stat-box"><div class="stat-box-label">HOS Violations</div><div class="stat-box-val" style="color:var(--danger)">2</div><div class="stat-box-sub">This week</div></div>
+      </div>
+      <div class="grid-3" id="driversGrid"></div>
+    </div>
+
+    <!-- ════════════ ROUTES & TRACKING ════════════ -->
+    <div class="page-view" id="page-routes">
+      <div class="page-header">
+        <div><div class="page-title">Routes & Tracking</div><div class="page-sub">Real-time GPS tracking and route optimization</div></div>
+        <div class="page-actions"><button class="btn btn-primary">Optimize Routes</button></div>
+      </div>
+      <div class="grid-2" style="flex:1;min-height:0;">
+        <div class="card" style="flex:1;">
+          <div class="card-header"><div class="card-title">Live Vehicle Map</div><div class="card-badge live">Live</div></div>
+          <div class="map-area">
+            <svg class="map-svg" viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg">
+              <rect width="700" height="500" fill="#0e1420"/>
+              <g stroke="#141c2c" stroke-width="0.5" opacity="0.5">
+                <line x1="0" y1="100" x2="700" y2="100"/><line x1="0" y1="200" x2="700" y2="200"/>
+                <line x1="0" y1="300" x2="700" y2="300"/><line x1="0" y1="400" x2="700" y2="400"/>
+                <line x1="175" y1="0" x2="175" y2="500"/><line x1="350" y1="0" x2="350" y2="500"/><line x1="525" y1="0" x2="525" y2="500"/>
+              </g>
+              <g stroke="#1e3a5f" stroke-width="2.5" fill="none" opacity="0.8">
+                <path d="M0 200 Q175 185 350 192 Q525 198 700 190"/>
+                <path d="M0 340 Q175 330 350 335 Q525 340 700 332"/>
+                <path d="M420 0 Q410 130 400 220 Q390 310 380 500"/>
+                <path d="M240 0 Q260 140 270 240 Q285 360 300 500"/>
+              </g>
+              <g stroke="#00d4aa" stroke-width="1.5" fill="none" stroke-dasharray="6,4" opacity="0.5">
+                <path d="M150 120 Q220 180 280 280 Q320 340 370 420"/>
+                <path d="M500 150 Q480 200 460 260 Q440 310 420 380"/>
+              </g>
+              <g fill="#1e3250">
+                <circle cx="150" cy="110" r="16" opacity="0.6"/>
+                <circle cx="350" cy="195" r="20" opacity="0.6"/>
+                <circle cx="560" cy="145" r="14" opacity="0.6"/>
+                <circle cx="490" cy="310" r="12" opacity="0.5"/>
+                <circle cx="220" cy="370" r="10" opacity="0.5"/>
+              </g>
+              <g fill="#3a5a8a" font-size="10" font-family="'DM Sans',sans-serif">
+                <text x="118" y="108">Chicago</text><text x="318" y="183">Kansas City</text>
+                <text x="534" y="142">Cleveland</text><text x="462" y="308">Louisville</text><text x="196" y="368">Memphis</text>
+              </g>
+              <g class="truck-marker" transform="translate(220,240)"><circle cx="0" cy="0" r="12" fill="#1d3a6a" stroke="#3b82f6" stroke-width="2"/><text x="0" y="4" text-anchor="middle" fill="#60a5fa" font-size="8" font-weight="bold">FL-4892</text></g>
+              <g class="truck-marker" transform="translate(440,165)"><circle cx="0" cy="0" r="12" fill="#0e3028" stroke="#10b981" stroke-width="2"/><text x="0" y="4" text-anchor="middle" fill="#34d399" font-size="8" font-weight="bold">TX-7841</text></g>
+              <g class="truck-marker" transform="translate(320,350)"><circle cx="0" cy="0" r="12" fill="#3a2a0a" stroke="#f59e0b" stroke-width="2"/><text x="0" y="4" text-anchor="middle" fill="#fbbf24" font-size="8" font-weight="bold">NY-1847</text></g>
+              <g class="truck-marker" transform="translate(180,340)"><circle cx="0" cy="0" r="12" fill="#3a0e0e" stroke="#ef4444" stroke-width="2"><animate attributeName="r" values="10;15;10" dur="1.5s" repeatCount="indefinite"/></circle><text x="0" y="4" text-anchor="middle" fill="#f87171" font-size="8" font-weight="bold">IL-5629</text></g>
+            </svg>
+          </div>
+        </div>
+        <div class="full-card">
+          <div class="card-header"><div class="card-title">Active Routes</div></div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Load</th><th>Route</th><th>ETA</th><th>Progress</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr onclick="openModal('loadDetailModal')" style="cursor:pointer;"><td class="bold">LD-001847</td><td>Chicago → Atlanta</td><td>Feb 23, 09:00</td><td><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">68%</div><div class="progress-bar"><div class="progress-fill" style="width:68%;background:var(--success)"></div></div></td><td><span class="status-pill in-transit">In Transit</span></td></tr>
+                <tr onclick="openModal('loadDetailModal')" style="cursor:pointer;"><td class="bold">LD-001852</td><td>Denver → Kansas City</td><td>Feb 22, 22:00</td><td><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">45%</div><div class="progress-bar"><div class="progress-fill" style="width:45%;background:var(--accent)"></div></div></td><td><span class="status-pill in-transit">In Transit</span></td></tr>
+                <tr onclick="openModal('loadDetailModal')" style="cursor:pointer;"><td class="bold">LD-001855</td><td>Detroit → Columbus</td><td>Feb 22, 18:30</td><td><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">82%</div><div class="progress-bar"><div class="progress-fill" style="width:82%;background:var(--success)"></div></div></td><td><span class="status-pill in-transit">In Transit</span></td></tr>
+                <tr onclick="openModal('loadDetailModal')" style="cursor:pointer;"><td class="bold">LD-001851</td><td>Houston → New Orleans</td><td>CRITICAL</td><td><div style="font-size:11px;color:var(--danger);margin-bottom:4px;">12%</div><div class="progress-bar"><div class="progress-fill" style="width:12%;background:var(--danger)"></div></div></td><td><span class="status-pill critical">Critical</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ WAREHOUSES ════════════ -->
+    <div class="page-view" id="page-warehouses">
+      <div class="page-header">
+        <div><div class="page-title">Warehouses & Hubs</div><div class="page-sub">12 distribution centers nationwide</div></div>
+        <div class="page-actions"><button class="btn btn-primary">+ Add Hub</button></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-box-label">Total Hubs</div><div class="stat-box-val">12</div><div class="stat-box-sub">Across 8 states</div></div>
+        <div class="stat-box"><div class="stat-box-label">Total Capacity</div><div class="stat-box-val" style="color:var(--accent)">2.4M</div><div class="stat-box-sub">Sq ft combined</div></div>
+        <div class="stat-box"><div class="stat-box-label">Avg Utilization</div><div class="stat-box-val" style="color:var(--warning)">74%</div><div class="stat-box-sub">Across all hubs</div></div>
+        <div class="stat-box"><div class="stat-box-label">Today's Shipments</div><div class="stat-box-val" style="color:var(--success)">183</div><div class="stat-box-sub">In/out combined</div></div>
+      </div>
+      <div class="grid-3">
+        <div class="hub-card"><div class="hub-name">Chicago Central Hub</div><div class="hub-addr">2847 Industrial Pkwy, Chicago, IL</div><div class="hub-stats"><div class="hub-stat"><div class="hub-stat-val" style="color:var(--success)">78%</div><div class="hub-stat-label">Capacity</div></div><div class="hub-stat"><div class="hub-stat-val">42</div><div class="hub-stat-label">Trucks Today</div></div><div class="hub-stat"><div class="hub-stat-val" style="color:var(--accent)">12</div><div class="hub-stat-label">Loading Bays</div></div><div class="hub-stat"><div class="hub-stat-val">340K</div><div class="hub-stat-label">Sq Ft</div></div></div></div>
+        <div class="hub-card"><div class="hub-name">Dallas Distribution Center</div><div class="hub-addr">5500 Commerce Dr, Dallas, TX</div><div class="hub-stats"><div class="hub-stat"><div class="hub-stat-val" style="color:var(--warning)">91%</div><div class="hub-stat-label">Capacity</div></div><div class="hub-stat"><div class="hub-stat-val">37</div><div class="hub-stat-label">Trucks Today</div></div><div class="hub-stat"><div class="hub-stat-val" style="color:var(--accent)">9</div><div class="hub-stat-label">Loading Bays</div></div><div class="hub-stat"><div class="hub-stat-val">280K</div><div class="hub-stat-label">Sq Ft</div></div></div></div>
+        <div class="hub-card"><div class="hub-name">Atlanta South Hub</div><div class="hub-addr">890 Airport Connector, Atlanta, GA</div><div class="hub-stats"><div class="hub-stat"><div class="hub-stat-val" style="color:var(--success)">58%</div><div class="hub-stat-label">Capacity</div></div><div class="hub-stat"><div class="hub-stat-val">28</div><div class="hub-stat-label">Trucks Today</div></div><div class="hub-stat"><div class="hub-stat-val" style="color:var(--accent)">8</div><div class="hub-stat-label">Loading Bays</div></div><div class="hub-stat"><div class="hub-stat-val">220K</div><div class="hub-stat-label">Sq Ft</div></div></div></div>
+        <div class="hub-card"><div class="hub-name">Los Angeles West Hub</div><div class="hub-addr">4120 Harbor Blvd, LA, CA</div><div class="hub-stats"><div class="hub-stat"><div class="hub-stat-val" style="color:var(--warning)">85%</div><div class="hub-stat-label">Capacity</div></div><div class="hub-stat"><div class="hub-stat-val">55</div><div class="hub-stat-label">Trucks Today</div></div><div class="hub-stat"><div class="hub-stat-val" style="color:var(--accent)">16</div><div class="hub-stat-label">Loading Bays</div></div><div class="hub-stat"><div class="hub-stat-val">420K</div><div class="hub-stat-label">Sq Ft</div></div></div></div>
+        <div class="hub-card"><div class="hub-name">Denver Mountain Hub</div><div class="hub-addr">7200 Gateway Rd, Denver, CO</div><div class="hub-stats"><div class="hub-stat"><div class="hub-stat-val" style="color:var(--success)">62%</div><div class="hub-stat-label">Capacity</div></div><div class="hub-stat"><div class="hub-stat-val">21</div><div class="hub-stat-label">Trucks Today</div></div><div class="hub-stat"><div class="hub-stat-val" style="color:var(--accent)">7</div><div class="hub-stat-label">Loading Bays</div></div><div class="hub-stat"><div class="hub-stat-val">190K</div><div class="hub-stat-label">Sq Ft</div></div></div></div>
+        <div class="hub-card"><div class="hub-name">Miami East Hub</div><div class="hub-addr">1400 NW 21st St, Miami, FL</div><div class="hub-stats"><div class="hub-stat"><div class="hub-stat-val" style="color:var(--success)">45%</div><div class="hub-stat-label">Capacity</div></div><div class="hub-stat"><div class="hub-stat-val">18</div><div class="hub-stat-label">Trucks Today</div></div><div class="hub-stat"><div class="hub-stat-val" style="color:var(--accent)">6</div><div class="hub-stat-label">Loading Bays</div></div><div class="hub-stat"><div class="hub-stat-val">160K</div><div class="hub-stat-label">Sq Ft</div></div></div></div>
+      </div>
+    </div>
+
+    <!-- ════════════ PROOF OF DELIVERY ════════════ -->
+    <div class="page-view" id="page-pod">
+      <div class="page-header">
+        <div><div class="page-title">Proof of Delivery</div><div class="page-sub">Digital signatures, photos & confirmations</div></div>
+        <div class="page-actions"><button class="btn btn-secondary">Export All</button></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-box-label">Total Today</div><div class="stat-box-val">47</div><div class="stat-box-sub">Deliveries confirmed</div></div>
+        <div class="stat-box"><div class="stat-box-label">With Photos</div><div class="stat-box-val" style="color:var(--accent)">39</div><div class="stat-box-sub">Photo documented</div></div>
+        <div class="stat-box"><div class="stat-box-label">Signed</div><div class="stat-box-val" style="color:var(--success)">44</div><div class="stat-box-sub">Digital signatures</div></div>
+        <div class="stat-box"><div class="stat-box-label">Disputed</div><div class="stat-box-val" style="color:var(--danger)">3</div><div class="stat-box-sub">Under review</div></div>
+      </div>
+      <div class="grid-3">
+        <div class="pod-card" onclick="openModal('podDetailModal')"><div class="pod-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="pod-load">LD-2024-001850</div><div class="pod-route">Miami → Jacksonville</div><div class="pod-footer"><span class="status-pill delivered">Delivered</span><span style="font-size:11px;color:var(--text3)">Feb 22 · 10:42</span></div></div>
+        <div class="pod-card" onclick="openModal('podDetailModal')"><div class="pod-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="pod-load">LD-2024-001843</div><div class="pod-route">Nashville → Memphis</div><div class="pod-footer"><span class="status-pill delivered">Delivered</span><span style="font-size:11px;color:var(--text3)">Feb 22 · 09:15</span></div></div>
+        <div class="pod-card" onclick="openModal('podDetailModal')"><div class="pod-img" style="border:1px solid rgba(239,68,68,0.3);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="pod-load">LD-2024-001838</div><div class="pod-route">Denver → Albuquerque</div><div class="pod-footer"><span class="status-pill critical">Disputed</span><span style="font-size:11px;color:var(--text3)">Feb 21 · 18:00</span></div></div>
+        <div class="pod-card" onclick="openModal('podDetailModal')"><div class="pod-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="pod-load">LD-2024-001845</div><div class="pod-route">Seattle → Portland</div><div class="pod-footer"><span class="status-pill delivered">Delivered</span><span style="font-size:11px;color:var(--text3)">Feb 22 · 11:58</span></div></div>
+        <div class="pod-card" onclick="openModal('podDetailModal')"><div class="pod-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="pod-load">LD-2024-001840</div><div class="pod-route">Phoenix → Las Vegas</div><div class="pod-footer"><span class="status-pill delivered">Delivered</span><span style="font-size:11px;color:var(--text3)">Feb 22 · 08:30</span></div></div>
+        <div class="pod-card" onclick="openModal('podDetailModal')"><div class="pod-img" style="border:1px solid rgba(239,68,68,0.3);"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="pod-load">LD-2024-001836</div><div class="pod-route">Indianapolis → Columbus</div><div class="pod-footer"><span class="status-pill critical">Disputed</span><span style="font-size:11px;color:var(--text3)">Feb 21 · 14:20</span></div></div>
+      </div>
+    </div>
+
+    <!-- ════════════ BILLING ════════════ -->
+    <div class="page-view" id="page-billing">
+      <div class="page-header">
+        <div><div class="page-title">Billing & Invoices</div><div class="page-sub">Manage revenue and payments</div></div>
+        <div class="page-actions">
+          <button class="btn btn-secondary">Export CSV</button>
+          <button class="btn btn-primary" onclick="openModal('newInvoiceModal')">+ New Invoice</button>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-box-label">Revenue MTD</div><div class="stat-box-val" style="color:var(--success)">$1.2M</div><div class="stat-box-sub">↑ 1.15% vs last month</div></div>
+        <div class="stat-box"><div class="stat-box-label">Outstanding</div><div class="stat-box-val" style="color:var(--warning)">$184K</div><div class="stat-box-sub">12 invoices pending</div></div>
+        <div class="stat-box"><div class="stat-box-label">Overdue</div><div class="stat-box-val" style="color:var(--danger)">$47K</div><div class="stat-box-sub">4 invoices overdue</div></div>
+        <div class="stat-box"><div class="stat-box-label">Paid This Month</div><div class="stat-box-val" style="color:var(--accent)">$969K</div><div class="stat-box-sub">81% collection rate</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card" style="flex:1;">
+          <div class="card-header"><div class="card-title">Revenue Trend</div></div>
+          <div class="chart-wrap" style="min-height:200px;"><canvas id="billingChart"></canvas></div>
+        </div>
+        <div class="full-card">
+          <div class="card-header"><div class="card-title">Recent Invoices</div><div style="font-size:12px;color:var(--text3)">28 this month</div></div>
+          <div style="flex:1;overflow-y:auto;">
+            <div class="invoice-row" onclick="openModal('invoiceDetailModal')"><div class="invoice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="invoice-info"><div class="invoice-id">INV-2024-0892</div><div class="invoice-meta">Acme Corp · Due Mar 1</div></div><div><div class="invoice-amount">$24,500</div><span class="status-pill paid">Paid</span></div></div>
+            <div class="invoice-row" onclick="openModal('invoiceDetailModal')"><div class="invoice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="invoice-info"><div class="invoice-id">INV-2024-0893</div><div class="invoice-meta">GlobalTech Shipping · Due Feb 28</div></div><div><div class="invoice-amount">$18,200</div><span class="status-pill pending">Pending</span></div></div>
+            <div class="invoice-row" onclick="openModal('invoiceDetailModal')"><div class="invoice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="invoice-info"><div class="invoice-id">INV-2024-0890</div><div class="invoice-meta">Midwest Logistics · Due Feb 20</div></div><div><div class="invoice-amount">$31,750</div><span class="status-pill overdue">Overdue</span></div></div>
+            <div class="invoice-row" onclick="openModal('invoiceDetailModal')"><div class="invoice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="invoice-info"><div class="invoice-id">INV-2024-0891</div><div class="invoice-meta">Pacific Freight Inc · Due Mar 5</div></div><div><div class="invoice-amount">$12,900</div><span class="status-pill paid">Paid</span></div></div>
+            <div class="invoice-row" onclick="openModal('invoiceDetailModal')"><div class="invoice-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="invoice-info"><div class="invoice-id">INV-2024-0889</div><div class="invoice-meta">Eastern Transport · Due Feb 15</div></div><div><div class="invoice-amount">$9,400</div><span class="status-pill overdue">Overdue</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ REPORTS ════════════ -->
+    <div class="page-view" id="page-reports">
+      <div class="page-header">
+        <div><div class="page-title">Reports</div><div class="page-sub">Analytics, insights & exportable reports</div></div>
+        <div class="page-actions"><button class="btn btn-primary">Generate Report</button></div>
+      </div>
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div class="card"><div class="card-header"><div class="card-title">Fleet Utilization (7 days)</div></div><div class="chart-wrap" style="min-height:200px;"><canvas id="utilChart"></canvas></div></div>
+        <div class="card"><div class="card-header"><div class="card-title">On-Time Rate (30 days)</div></div><div class="chart-wrap" style="min-height:200px;"><canvas id="ontimeChart"></canvas></div></div>
+      </div>
+      <div class="grid-3">
+        <div class="report-card" onclick="openModal('exportModal')"><div class="report-icon" style="background:rgba(0,212,170,0.1);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="report-name">Operations Summary</div><div class="report-desc">Daily/weekly/monthly KPIs including loads, on-time %, revenue.</div><div class="report-meta"><span>Last generated: Today</span><span style="color:var(--accent)">Download</span></div></div>
+        <div class="report-card" onclick="openModal('exportModal')"><div class="report-icon" style="background:rgba(59,130,246,0.1);color:var(--accent2);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="report-name">Driver Performance</div><div class="report-desc">Individual driver ratings, HOS compliance, and delivery records.</div><div class="report-meta"><span>Last generated: Yesterday</span><span style="color:var(--accent)">Download</span></div></div>
+        <div class="report-card" onclick="openModal('exportModal')"><div class="report-icon" style="background:rgba(245,158,11,0.1);color:var(--warning);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg></div><div class="report-name">Fuel Cost Analysis</div><div class="report-desc">Fuel spend by vehicle, route efficiency and MPG tracking.</div><div class="report-meta"><span>Last generated: Feb 21</span><span style="color:var(--accent)">Download</span></div></div>
+        <div class="report-card" onclick="openModal('exportModal')"><div class="report-icon" style="background:rgba(16,185,129,0.1);color:var(--success);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="report-name">Revenue & Billing</div><div class="report-desc">Invoice status, revenue trends, collection rates and aging report.</div><div class="report-meta"><span>Last generated: Today</span><span style="color:var(--accent)">Download</span></div></div>
+        <div class="report-card" onclick="openModal('exportModal')"><div class="report-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="report-name">Fleet Maintenance</div><div class="report-desc">Service history, upcoming maintenance schedules and vehicle health.</div><div class="report-meta"><span>Last generated: Feb 20</span><span style="color:var(--accent)">Download</span></div></div>
+        <div class="report-card" onclick="openModal('exportModal')"><div class="report-icon" style="background:rgba(239,68,68,0.1);color:var(--danger);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg></div><div class="report-name">Exceptions & Alerts</div><div class="report-desc">All incidents, delays, critical alerts and resolution tracking.</div><div class="report-meta"><span>Last generated: Today</span><span style="color:var(--accent)">Download</span></div></div>
+      </div>
+    </div>
+
+    <!-- ════════════ AI OPS ASSISTANT ════════════ -->
+    <div class="page-view" id="page-ai">
+      <div class="page-header">
+        <div><div class="page-title">AI Ops Assistant</div><div class="page-sub">Intelligent dispatch, route optimization, and anomaly detection</div></div>
+      </div>
+      <div class="grid-2" style="flex:1;min-height:0;">
+        <div class="card" style="flex:1;">
+          <div class="card-header">
+            <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              AI Chat
+            </div>
+            <div class="card-badge live">Online</div>
+          </div>
+          <div class="chat-area" id="chatArea">
+            <div class="chat-msg bot">
+              <div class="chat-sender">Delivery In-time AI</div>
+              <div class="chat-bubble">Hello GGPRanga! I'm your AI operations assistant. I can help you with route optimization, load assignments, exception alerts, and fleet analytics. What can I help you with today?</div>
+              <div class="chat-time">Now</div>
+            </div>
+            <div class="chat-msg bot">
+              <div class="chat-sender">Delivery In-time AI</div>
+              <div class="chat-bubble">⚠️ <strong>Alert:</strong> Vehicle IL-5629 on the Houston→New Orleans route is running 2h 15min behind schedule due to a road closure on I-10. I recommend re-routing via US-90. Shall I update the dispatch?</div>
+              <div class="chat-time">Just now</div>
+            </div>
+          </div>
+          <div class="quick-chips">
+            <div class="quick-chip" onclick="sendQuickMsg(this)">Optimize all routes</div>
+            <div class="quick-chip" onclick="sendQuickMsg(this)">Show critical alerts</div>
+            <div class="quick-chip" onclick="sendQuickMsg(this)">Assign unloaded trucks</div>
+            <div class="quick-chip" onclick="sendQuickMsg(this)">Revenue summary</div>
+            <div class="quick-chip" onclick="sendQuickMsg(this)">Driver availability</div>
+          </div>
+          <div class="chat-input-wrap">
+            <textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask anything about your operations…" onkeydown="handleChatKey(event)"></textarea>
+            <button class="chat-send" onclick="sendChat()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;flex:1;">
+          <div class="card">
+            <div class="card-header"><div class="card-title">AI Recommendations</div><span class="status-pill assigned">3 new</span></div>
+            <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px;">
+              <div class="alert-box warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><div class="alert-title">Re-route IL-5629</div><div class="alert-desc">Road closure on I-10. Suggested detour via US-90 saves 45 min.</div></div></div>
+              <div class="alert-box success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div><div class="alert-title">Consolidate LD-1851 + LD-1858</div><div class="alert-desc">Similar routes detected. Consolidating saves $340 in fuel costs.</div></div></div>
+              <div class="alert-box danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg><div><div class="alert-title">HOS Violation Risk</div><div class="alert-desc">Driver Carlos Mendez approaching 70-hour weekly limit. Assign relief driver.</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">AI Efficiency Score</div></div>
+            <div style="padding:18px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="font-size:13px;color:var(--text2)">Route Optimization</span><span style="font-size:13px;font-weight:600;color:var(--success)">91%</span></div>
+              <div class="progress-bar" style="margin-bottom:14px;"><div class="progress-fill" style="width:91%;background:var(--success)"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="font-size:13px;color:var(--text2)">Fleet Utilization</span><span style="font-size:13px;font-weight:600;color:var(--accent)">76%</span></div>
+              <div class="progress-bar" style="margin-bottom:14px;"><div class="progress-fill" style="width:76%;background:var(--accent)"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="font-size:13px;color:var(--text2)">On-Time Delivery</span><span style="font-size:13px;font-weight:600;color:var(--accent2)">94%</span></div>
+              <div class="progress-bar" style="margin-bottom:14px;"><div class="progress-fill" style="width:94%;background:var(--accent2)"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><span style="font-size:13px;color:var(--text2)">Fuel Efficiency</span><span style="font-size:13px;font-weight:600;color:var(--warning)">68%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:68%;background:var(--warning)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ SETTINGS ════════════ -->
+    <div class="page-view" id="page-settings">
+      <div class="page-header">
+        <div><div class="page-title">Settings</div><div class="page-sub">System configuration and preferences</div></div>
+        <div class="page-actions"><button class="btn btn-primary" onclick="showToast('Settings saved!')">Save Changes</button></div>
+      </div>
+      <div class="grid-2" style="align-items:start;">
+        <div>
+          <div class="full-card" style="padding:22px 24px;">
+            <div class="settings-section">
+              <div class="settings-section-title">General</div>
+              <div class="setting-row"><div><div class="setting-label">Company Name</div><div class="setting-desc">Display name across the platform</div></div><input class="form-input" value="Delivery In-time" style="width:200px;"></div>
+              <div class="setting-row"><div><div class="setting-label">Timezone</div><div class="setting-desc">Used for all timestamps</div></div><select class="form-input form-select" style="width:180px;"><option>UTC-6 (CST)</option><option>UTC-5 (EST)</option><option>UTC-8 (PST)</option></select></div>
+              <div class="setting-row"><div><div class="setting-label">Distance Unit</div></div><select class="form-input form-select" style="width:120px;"><option>Miles</option><option>Kilometers</option></select></div>
+            </div>
+            <div class="settings-section">
+              <div class="settings-section-title">Notifications</div>
+              <div class="setting-row"><div><div class="setting-label">Critical Alerts</div><div class="setting-desc">Immediate notification for critical issues</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div class="setting-label">Delivery Updates</div><div class="setting-desc">Status changes and ETA updates</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div class="setting-label">Daily Summary Email</div><div class="setting-desc">End-of-day operations digest</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div class="setting-label">AI Recommendations</div><div class="setting-desc">Automated AI suggestions and alerts</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="full-card" style="padding:22px 24px;">
+            <div class="settings-section">
+              <div class="settings-section-title">Profile</div>
+              <div class="setting-row"><div><div class="setting-label">Name</div></div><input class="form-input" value="GGPRanga" style="width:200px;"></div>
+              <div class="setting-row"><div><div class="setting-label">Email</div></div><input class="form-input" value="ggpranga@delivery-intime.com" style="width:220px;"></div>
+              <div class="setting-row"><div><div class="setting-label">Role</div></div><span style="font-size:13px;color:var(--text2)">Operations Manager</span></div>
+            </div>
+            <div class="settings-section">
+              <div class="settings-section-title">API & Integrations</div>
+              <div class="setting-row"><div><div class="setting-label">MCP Server</div><div class="setting-desc">Connected to lamp-mcp-server</div></div><span class="status-pill active">Connected</span></div>
+              <div class="setting-row"><div><div class="setting-label">GPS Tracking</div><div class="setting-desc">Real-time vehicle telemetry</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div><div class="setting-label">ELD Integration</div><div class="setting-desc">Electronic logging device sync</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+
+<!-- ═══════════════════════════════════════════════
+     NOTIFICATION PANEL
+════════════════════════════════════════════════ -->
+<div class="overlay" id="notifOverlay" onclick="closeNotifPanel()"></div>
+<div class="side-panel" id="notifPanel">
+  <div class="panel-header">
+    <div class="panel-title">Notifications</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span style="font-size:12px;color:var(--text3);cursor:pointer;" onclick="markAllRead()">Mark all read</span>
+      <div class="panel-close" onclick="closeNotifPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="notif-item unread" onclick="this.classList.remove('unread');updateNotifDot()"><div class="notif-icon danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="notif-content"><div class="notif-title">Critical Alert — IL-5629</div><div class="notif-desc">Vehicle stopped unexpectedly on I-10 near Baton Rouge. Driver contact required.</div><div class="notif-time">2 min ago</div></div></div>
+    <div class="notif-item unread" onclick="this.classList.remove('unread');updateNotifDot()"><div class="notif-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div class="notif-content"><div class="notif-title">Delay Warning — NY-1847</div><div class="notif-desc">Load LD-001852 is running 45 minutes behind schedule. ETA updated to 22:45.</div><div class="notif-time">18 min ago</div></div></div>
+    <div class="notif-item unread" onclick="this.classList.remove('unread');updateNotifDot()"><div class="notif-icon danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="notif-content"><div class="notif-title">HOS Alert — Carlos Mendez</div><div class="notif-desc">Driver approaching 70-hour weekly limit. 2.5 hours remaining. Action required.</div><div class="notif-time">35 min ago</div></div></div>
+    <div class="notif-item"><div class="notif-icon success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="notif-content"><div class="notif-title">Delivered — LD-001850</div><div class="notif-desc">Miami → Jacksonville delivery completed. Signed by recipient at 10:42 AM.</div><div class="notif-time">1 hr ago</div></div></div>
+    <div class="notif-item"><div class="notif-icon info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><div class="notif-content"><div class="notif-title">Invoice Overdue — INV-0890</div><div class="notif-desc">$31,750 from Midwest Logistics is 2 days past due. Send reminder?</div><div class="notif-time">2 hr ago</div></div></div>
+    <div class="notif-item"><div class="notif-icon warning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><div class="notif-content"><div class="notif-title">Maintenance Due — Truck #T-0047</div><div class="notif-desc">Scheduled oil change overdue by 2,300 miles. Schedule service immediately.</div><div class="notif-time">3 hr ago</div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MODALS
+════════════════════════════════════════════════ -->
+
+<!-- NEW LOAD MODAL -->
+<div class="modal-overlay" id="newLoadModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Create New Load</div><div class="panel-close" onclick="closeModal('newLoadModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+    <div class="modal-body">
+      <div class="form-row"><div class="form-group"><div class="form-label">Origin City</div><input id="newOrigin" class="form-input" placeholder="e.g. Chicago, IL"></div><div class="form-group"><div class="form-label">Destination City</div><input id="newDestination" class="form-input" placeholder="e.g. Atlanta, GA"></div></div>
+      <div class="form-row"><div class="form-group"><div class="form-label">Pickup Date & Time</div><input id="newPickup" class="form-input" type="datetime-local"></div><div class="form-group"><div class="form-label">Delivery Deadline</div><input id="newDeadline" class="form-input" type="datetime-local"></div></div>
+      <div class="form-row"><div class="form-group"><div class="form-label">Assign Driver</div><select id="newDriver" class="form-input form-select"><option>-- Select Driver --</option><option>Mike Rodriguez</option><option>Jennifer Chen</option><option>David Thompson</option><option>Maria Santos</option><option>Lisa Park</option></select></div><div class="form-group"><div class="form-label">Assign Vehicle</div><select id="newVehicle" class="form-input form-select"><option>-- Select Vehicle --</option><option>FL-4892</option><option>TX-7841</option><option>CA-3952</option></select></div></div>
+      <div class="form-row"><div class="form-group"><div class="form-label">Cargo Type</div><select id="newCargo" class="form-input form-select"><option>General Freight</option><option>Refrigerated</option><option>Hazmat</option><option>Oversized</option></select></div><div class="form-group"><div class="form-label">Load Value ($)</div><input id="newValue" class="form-input" type="number" placeholder="0.00"></div></div>
+      <div class="form-group"><div class="form-label">Special Instructions</div><textarea id="newNotes" class="form-input" rows="2" placeholder="Any special handling or delivery notes…"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('newLoadModal')">Cancel</button><button class="btn btn-primary" onclick="createOrder()">Create Load</button></div>
+  </div>
+</div>
+
+<!-- LOAD DETAIL MODAL -->
+<div class="modal-overlay" id="loadDetailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-title">Load LD-2024-001847</div><div style="font-size:12px;color:var(--text3);margin-top:2px;">Chicago → Atlanta · Active</div></div>
+      <div style="display:flex;gap:8px;align-items:center;"><span class="status-pill in-transit">In Transit</span><div class="panel-close" onclick="closeModal('loadDetailModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:16px;"><div style="font-size:12px;color:var(--text3);margin-bottom:6px;">Progress</div><div class="progress-bar" style="height:8px;"><div class="progress-fill" style="width:68%;background:var(--success)"></div></div><div style="display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:var(--text3)"><span>Chicago, IL</span><span>68% · 342 mi remaining</span><span>Atlanta, GA</span></div></div>
+      <div class="detail-row"><div class="detail-key">Driver</div><div class="detail-val">Mike Rodriguez</div></div>
+      <div class="detail-row"><div class="detail-key">Vehicle</div><div class="detail-val">FL-4892 · Freightliner Cascadia</div></div>
+      <div class="detail-row"><div class="detail-key">ETA</div><div class="detail-val" style="color:var(--success)">Feb 23, 2026 · 09:00 AM</div></div>
+      <div class="detail-row"><div class="detail-key">Cargo</div><div class="detail-val">General Freight · 42,000 lbs</div></div>
+      <div class="detail-row"><div class="detail-key">Distance</div><div class="detail-val">718 mi total · 342 mi remaining</div></div>
+      <div class="detail-row"><div class="detail-key">Load Value</div><div class="detail-val" style="color:var(--accent)">$8,400</div></div>
+      <div class="detail-row"><div class="detail-key">Customer</div><div class="detail-val">Acme Corp</div></div>
+      <div class="detail-row"><div class="detail-key">Last Position Update</div><div class="detail-val">3 min ago · Near Chattanooga, TN</div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-danger">Cancel Load</button><button class="btn btn-secondary" onclick="closeModal('loadDetailModal')">Close</button><button class="btn btn-primary" onclick="closeModal('loadDetailModal');showToast('Driver contacted!')">Contact Driver</button></div>
+  </div>
+</div>
+
+<!-- ADD DRIVER MODAL -->
+<div class="modal-overlay" id="addDriverModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Add New Driver</div><div class="panel-close" onclick="closeModal('addDriverModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+    <div class="modal-body">
+      <div class="form-row"><div class="form-group"><div class="form-label">First Name</div><input class="form-input" placeholder="First name"></div><div class="form-group"><div class="form-label">Last Name</div><input class="form-input" placeholder="Last name"></div></div>
+      <div class="form-row"><div class="form-group"><div class="form-label">License Number</div><input class="form-input" placeholder="CDL number"></div><div class="form-group"><div class="form-label">License Class</div><select class="form-input form-select"><option>Class A CDL</option><option>Class B CDL</option><option>Class C CDL</option></select></div></div>
+      <div class="form-row"><div class="form-group"><div class="form-label">Phone</div><input class="form-input" placeholder="+1 (000) 000-0000" type="tel"></div><div class="form-group"><div class="form-label">Email</div><input class="form-input" placeholder="driver@email.com" type="email"></div></div>
+      <div class="form-row"><div class="form-group"><div class="form-label">Home Base Hub</div><select class="form-input form-select"><option>Chicago Central Hub</option><option>Dallas Distribution Center</option><option>Atlanta South Hub</option><option>Los Angeles West Hub</option></select></div><div class="form-group"><div class="form-label">Experience (years)</div><input class="form-input" type="number" placeholder="0"></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('addDriverModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('addDriverModal');showToast('Driver added successfully!')">Add Driver</button></div>
+  </div>
+</div>
+
+<!-- INVOICE DETAIL MODAL -->
+<div class="modal-overlay" id="invoiceDetailModal">
+  <div class="modal">
+    <div class="modal-header"><div><div class="modal-title">Invoice INV-2024-0892</div><div style="font-size:12px;color:var(--text3);margin-top:2px;">Acme Corp · Due Mar 1, 2026</div></div><div style="display:flex;gap:8px;align-items:center;"><span class="status-pill paid">Paid</span><div class="panel-close" onclick="closeModal('invoiceDetailModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div></div>
+    <div class="modal-body">
+      <div class="detail-row"><div class="detail-key">Customer</div><div class="detail-val">Acme Corp</div></div>
+      <div class="detail-row"><div class="detail-key">Invoice Date</div><div class="detail-val">Feb 15, 2026</div></div>
+      <div class="detail-row"><div class="detail-key">Due Date</div><div class="detail-val">Mar 1, 2026</div></div>
+      <div class="detail-row"><div class="detail-key">Related Loads</div><div class="detail-val">LD-001847, LD-001839, LD-001822</div></div>
+      <div class="detail-row"><div class="detail-key">Subtotal</div><div class="detail-val">$22,900</div></div>
+      <div class="detail-row"><div class="detail-key">Fuel Surcharge (7%)</div><div class="detail-val">$1,600</div></div>
+      <div class="detail-row"><div class="detail-key">Total</div><div class="detail-val" style="color:var(--accent);font-size:16px;font-family:'Syne',sans-serif;">$24,500</div></div>
+      <div class="detail-row"><div class="detail-key">Payment Date</div><div class="detail-val" style="color:var(--success)">Feb 20, 2026 · Wire Transfer</div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('invoiceDetailModal')">Close</button><button class="btn btn-primary" onclick="showToast('Invoice downloaded!')">Download PDF</button></div>
+  </div>
+</div>
+
+<!-- NEW INVOICE MODAL -->
+<div class="modal-overlay" id="newInvoiceModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Create Invoice</div><div class="panel-close" onclick="closeModal('newInvoiceModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+    <div class="modal-body">
+      <div class="form-row"><div class="form-group"><div class="form-label">Customer</div><input class="form-input" placeholder="Customer name"></div><div class="form-group"><div class="form-label">Due Date</div><input class="form-input" type="date"></div></div>
+      <div class="form-group"><div class="form-label">Related Load IDs</div><input class="form-input" placeholder="LD-001847, LD-001848…"></div>
+      <div class="form-row"><div class="form-group"><div class="form-label">Amount ($)</div><input class="form-input" type="number" placeholder="0.00"></div><div class="form-group"><div class="form-label">Fuel Surcharge (%)</div><input class="form-input" type="number" placeholder="7" value="7"></div></div>
+      <div class="form-group"><div class="form-label">Notes</div><textarea class="form-input" rows="2" placeholder="Payment terms, notes…"></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('newInvoiceModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('newInvoiceModal');showToast('Invoice created and sent!')">Create & Send</button></div>
+  </div>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal" style="width:420px;">
+    <div class="modal-header"><div class="modal-title">Export Data</div><div class="panel-close" onclick="closeModal('exportModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+    <div class="modal-body">
+      <div class="form-group"><div class="form-label">Format</div><select class="form-input form-select"><option>PDF Report</option><option>CSV Spreadsheet</option><option>Excel (.xlsx)</option></select></div>
+      <div class="form-group"><div class="form-label">Date Range</div><select class="form-input form-select"><option>Today</option><option>Last 7 days</option><option>Last 30 days</option><option>Custom range</option></select></div>
+      <div class="form-group"><div class="form-label">Include Sections</div>
+        <label style="display:flex;gap:8px;align-items:center;margin-top:8px;font-size:13px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> KPI Summary</label>
+        <label style="display:flex;gap:8px;align-items:center;margin-top:6px;font-size:13px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> Load Details</label>
+        <label style="display:flex;gap:8px;align-items:center;margin-top:6px;font-size:13px;color:var(--text2);cursor:pointer;"><input type="checkbox" checked> Driver Performance</label>
+        <label style="display:flex;gap:8px;align-items:center;margin-top:6px;font-size:13px;color:var(--text2);cursor:pointer;"><input type="checkbox"> Financial Summary</label>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('exportModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('exportModal');showToast('Report exported!')">Export</button></div>
+  </div>
+</div>
+
+<!-- POD DETAIL MODAL -->
+<div class="modal-overlay" id="podDetailModal">
+  <div class="modal">
+    <div class="modal-header"><div><div class="modal-title">Proof of Delivery — LD-001850</div><div style="font-size:12px;color:var(--text3);margin-top:2px;">Miami → Jacksonville · Feb 22, 10:42 AM</div></div><div class="panel-close" onclick="closeModal('podDetailModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+    <div class="modal-body">
+      <div style="background:var(--bg);border:1px dashed var(--border);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--text3);gap:10px;flex-direction:column;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span style="font-size:13px;">Delivery Photo — 4.2 MB</span><button class="btn btn-secondary" style="font-size:12px;padding:4px 12px;">View Full Image</button></div>
+      <div class="detail-row"><div class="detail-key">Recipient</div><div class="detail-val">James Baker (Warehouse Manager)</div></div>
+      <div class="detail-row"><div class="detail-key">Signature</div><div class="detail-val" style="color:var(--success)">✓ Digital Signature Captured</div></div>
+      <div class="detail-row"><div class="detail-key">Driver</div><div class="detail-val">Maria Santos</div></div>
+      <div class="detail-row"><div class="detail-key">Delivered At</div><div class="detail-val">Feb 22, 2026 · 10:42 AM EST</div></div>
+      <div class="detail-row"><div class="detail-key">GPS Verified</div><div class="detail-val" style="color:var(--success)">✓ Location confirmed (±10m)</div></div>
+      <div class="detail-row"><div class="detail-key">Condition</div><div class="detail-val">No damage reported</div></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('podDetailModal')">Close</button><button class="btn btn-primary" onclick="showToast('POD downloaded!')">Download POD</button></div>
+  </div>
+</div>
+
+<!-- UPDATE ORDER MODAL -->
+<div class="modal-overlay" id="updateOrderModal">
+  <div class="modal" style="width:420px;">
+    <div class="modal-header">
+      <div class="modal-title" id="updateModalLabel">Update Order Status</div>
+      <div class="panel-close" onclick="closeModal('updateOrderModal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="updateOrderId">
+      <div class="form-group">
+        <label class="form-label">New Status</label>
+        <select id="updateOrderStatus" class="form-input">
+          <option value="unassigned">Unassigned</option>
+          <option value="assigned">Assigned</option>
+          <option value="in-transit">In Transit</option>
+          <option value="delivered">Delivered</option>
+          <option value="delayed">Delayed</option>
+          <option value="critical">Critical</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('updateOrderModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitUpdateOrder()">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--accent);border-radius:10px;padding:12px 20px;font-size:13.5px;color:var(--text);display:none;z-index:999;box-shadow:0 8px 30px rgba(0,0,0,0.4);gap:10px;align-items:center;transition:all 0.25s;"></div>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS — data first, then app logic
+════════════════════════════════════════════════ -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
